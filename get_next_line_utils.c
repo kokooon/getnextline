@@ -6,7 +6,7 @@
 /*   By: gmarzull <gmarzull@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:03:05 by gmarzull          #+#    #+#             */
-/*   Updated: 2022/03/03 19:26:01 by gmarzull         ###   ########.fr       */
+/*   Updated: 2022/03/04 16:10:45 by gmarzull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,13 @@ char	*ft_strjoin(char const *s1, char const *s2)
 			* (ft_strlen((char *)s1) + ft_strlen((char *)s2) + 1));
 	if (s3 == NULL)
 		return (NULL);
-	i = -1;
+	i = 0;
 	j = 0;
-	while (s1[++i])
+	while (s1[i])
+	{
 		s3[i] = s1[i];
+		i++;
+	}
 	while (s2[j])
 	{
 		s3[i + j] = s2[j];
