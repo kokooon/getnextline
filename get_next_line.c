@@ -6,24 +6,25 @@
 /*   By: gmarzull <gmarzull@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:03:09 by gmarzull          #+#    #+#             */
-/*   Updated: 2022/03/04 16:52:30 by gmarzull         ###   ########.fr       */
+/*   Updated: 2022/03/05 14:59:34 by gmarzull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_cleantmp(char *s, char *tmp)
+char	*ft_cleantmp(char **s, char *tmp)
 {
 	char	*s1;
 	char	*tmp1;
 	int		i;
 
 	i = 0;
-	s1 = s;
+	s1 = *s;
 	tmp1 = tmp;
 	if (!(ft_strchr(tmp, 10)))
 	{
-		s = ft_strjoin(s1, tmp1);
+		*s = ft_strjoin(s1, tmp);
+		free(s1);
 		return (NULL);
 	}
 	else
@@ -31,9 +32,17 @@ char	*ft_cleantmp(char *s, char *tmp)
 		tmp = ft_strdup(ft_strchr(tmp1, 10) + 1);
 		i = ft_strlen(tmp1) - ft_strlen(tmp);
 		*(tmp1 + i) = '\0';
+		*s = ft_strdup(s1 + i);
+		free(s1);
 		return (tmp1);
-		s = ft_strdup(s1 + i);
 	}
+}
+
+char	*ftset(char *s)
+{
+	if (s != NULL)
+		return (s);
+	return (NULL);
 }
 
 char	*get_next_line(int fd)
@@ -47,13 +56,17 @@ char	*get_next_line(int fd)
 	if (fd == -1)
 		return (NULL);
 	s = malloc(sizeof(char));
+	if (!s)
+		return (NULL);
 	*s = 0;
-	tmp = NULL;
 	i = 0;
+	tmp = ftset(tmp);
 	while (tmp != NULL)
 	{
-		tmp = ft_cleantmp(s, tmp);
-		if (tmp != NULL)
+		//printf(" la chaine s : %s", s);
+		tmp = ft_cleantmp(&s, tmp);
+		//printf(" la chaine s : %s", s);
+		if (tmp != NULL /*&& *tmp*/)
 			return (s);
 		else
 		{
@@ -63,9 +76,9 @@ char	*get_next_line(int fd)
 	}
 	//if (tmp == NULL)
 	len = read(fd, buffer, BUFFER_SIZE);
-	printf("taille de len :%d \n", len);
+	//printf("taille de len :%d \n", len);
 	buffer[len] = '\0';
-	printf("buffer : %s", buffer);
+	//printf("buffer : %s", buffer);
 	if (len < 0)
 		return (NULL);
 	if (len == 0)
@@ -76,13 +89,13 @@ char	*get_next_line(int fd)
 		{
 			// a modifier la copie du buffeur pas -> le buffeur contient plusieurs /n
 			s = ft_strjoin(s, buffer);
-			return (s) ;
+			return (s);
 		}
 		if (!ft_strchr(buffer, 10))
 		{
-			printf("La chaine s: %s \n", s);
+			//printf("La chaine s: %s \n", s);
 			s = ft_strjoin(s, buffer);
-			printf("La chaine s: %s \n", s);
+			//printf("La chaine s: %s \n", s);
 		}
 		else
 		{
@@ -92,8 +105,7 @@ char	*get_next_line(int fd)
 			s = ft_strjoin(s, buffer);
 			return (s);
 		}
-		if (tmp == NULL)
-			len = read(fd, buffer, BUFFER_SIZE);
+		len = read(fd, buffer, BUFFER_SIZE);
 	}
 	return (s);
 }
@@ -107,9 +119,19 @@ int	main(void)
 
 	fd = open("test.c", O_RDONLY);
 	s = get_next_line(fd);
-	printf("PREMIERE LIGNE :\n %s",s);
+	printf("%s",s);
+	free(s);
 	s = get_next_line(fd);
-	printf("DEUXIEME LIGNE :\n %s",s);
+	printf("%s",s);
+	free(s);
+	s = get_next_line(fd);
+	printf("%s",s);
+	free(s);
+	s = get_next_line(fd);
+	printf("%s",s);
+	free(s);
+	s = get_next_line(fd);
+	printf("%s",s);
 	free(s);
 	return (0);
 }
