@@ -6,18 +6,18 @@
 /*   By: gmarzull <gmarzull@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:03:05 by gmarzull          #+#    #+#             */
-/*   Updated: 2022/03/05 14:55:11 by gmarzull         ###   ########.fr       */
+/*   Updated: 2022/03/05 16:57:20 by gmarzull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	if (!s)
+	if (!s || !(*s))
 		return (0);
 	while (s[i] != '\0')
 		i++;
@@ -79,10 +79,7 @@ char	*ft_strdup(const char *s1)
 	char	*tab;
 
 	src = (char *)s1;
-	i = 0;
-	while (src[i])
-		i++;
-	tab = malloc(sizeof(*tab) * i + 1);
+	tab = malloc(sizeof(*tab) * (ft_strlen(src) + 1));
 	if (tab == 0x0)
 		return (0x0);
 	i = 0;

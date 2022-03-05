@@ -6,7 +6,7 @@
 /*   By: gmarzull <gmarzull@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:03:09 by gmarzull          #+#    #+#             */
-/*   Updated: 2022/03/05 14:59:34 by gmarzull         ###   ########.fr       */
+/*   Updated: 2022/03/05 17:13:14 by gmarzull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*get_next_line(int fd)
 	char	*s;
 	char	buffer[BUFFER_SIZE + 1];
 	int			len;
-	static char	*tmp;
+	static char	tmp[BUFFER_SIZE + 1];
 	int			i;
 
 	if (fd == -1)
@@ -61,7 +61,7 @@ char	*get_next_line(int fd)
 	*s = 0;
 	i = 0;
 	tmp = ftset(tmp);
-	while (tmp != NULL)
+	while ()
 	{
 		//printf(" la chaine s : %s", s);
 		tmp = ft_cleantmp(&s, tmp);
@@ -78,6 +78,7 @@ char	*get_next_line(int fd)
 	len = read(fd, buffer, BUFFER_SIZE);
 	//printf("taille de len :%d \n", len);
 	buffer[len] = '\0';
+	while(tmp[0] != 0)
 	//printf("buffer : %s", buffer);
 	if (len < 0)
 		return (NULL);
@@ -87,16 +88,26 @@ char	*get_next_line(int fd)
 	{
 		if (len < BUFFER_SIZE)
 		{
-			// a modifier la copie du buffeur pas -> le buffeur contient plusieurs /n
+			if (!ft_strchr(buffer, 10))
+			{
+				s = ft_strjoin(s, buffer);
+				return (s);
+			}
+			tmp = ft_strdup(ft_strchr(buffer, 10));
+			if (*(tmp + 1))
+			{
+				tmp = ft_strdup(tmp + 1);
+				i = ft_strlen(buffer) - ft_strlen(tmp);
+				buffer[i] = '\0';
+				s = ft_strjoin(s, buffer);
+				return (s);
+			}
 			s = ft_strjoin(s, buffer);
 			return (s);
+			// a modifier la copie du buffeur pas -> le buffeur contient plusieurs /n
 		}
 		if (!ft_strchr(buffer, 10))
-		{
-			//printf("La chaine s: %s \n", s);
 			s = ft_strjoin(s, buffer);
-			//printf("La chaine s: %s \n", s);
-		}
 		else
 		{
 			tmp = ft_strdup(ft_strchr(buffer, 10) + 1);
