@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmarzull <gmarzull@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/03 12:03:05 by gmarzull          #+#    #+#             */
-/*   Updated: 2022/03/05 16:57:20 by gmarzull         ###   ########.fr       */
+/*   Created: 2022/03/08 17:57:53 by gmarzull          #+#    #+#             */
+/*   Updated: 2022/03/08 18:08:31 by gmarzull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
-int	ft_strlen(const char *s)
+int	ft_strlen_bonus(char *t)
 {
 	int	i;
 
 	i = 0;
-	if (!s || !(*s))
+	if (!t || !(t[i]))
 		return (0);
-	while (s[i] != '\0')
+	while (t[i] != '\0')
 		i++;
 	return (i);
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr_bonus(const char *s, int c)
 {
 	int		i;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == (char)c)
@@ -40,20 +42,16 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin_bonus(const char *s1, const char *s2)
 {
 	char		*s3;
 	size_t		i;
 	size_t		j;
 
-	if (ft_strlen((char *) s1) + ft_strlen((char *) s2) == 0)
-	{
-		s3 = malloc(sizeof(char));
-		*s3 = 0;
-		return (s3);
-	}
+	if (ft_strlen_bonus((char *) s1) + ft_strlen_bonus((char *) s2) == 0)
+		return (NULL);
 	s3 = (char *)malloc(sizeof(char)
-			* (ft_strlen((char *)s1) + ft_strlen((char *)s2) + 1));
+			* (ft_strlen_bonus((char *)s1) + ft_strlen_bonus((char *)s2) + 1));
 	if (s3 == NULL)
 		return (NULL);
 	i = 0;
@@ -70,24 +68,4 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	s3[i + j] = '\0';
 	return (s3);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	int		i;
-	char	*src;
-	char	*tab;
-
-	src = (char *)s1;
-	tab = malloc(sizeof(*tab) * (ft_strlen(src) + 1));
-	if (tab == 0x0)
-		return (0x0);
-	i = 0;
-	while (src[i])
-	{
-		tab[i] = src[i];
-		i++;
-	}
-	tab[i] = '\0';
-	return (tab);
 }
